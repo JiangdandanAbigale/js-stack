@@ -22,7 +22,7 @@ import MessageAsync from './container/message-async'
 
 const App = () =>
   (
-    <div>
+    <div style={{ paddingTop: 54 }}>
       <Helmet titleTemplate={`%s | ${APP_NAME}`} defaultTitle={APP_NAME} />
       <h1>{APP_NAME}</h1>
       <Message />

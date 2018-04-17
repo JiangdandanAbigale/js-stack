@@ -4,10 +4,11 @@ import ReactDOMServer from 'react-dom/server'
 import Helmet from 'react-helmet'
 import { Provider } from 'react-redux'
 import { StaticRouter } from 'react-router'
+import { SheetsRegistry, JssProvider } from 'react-jss'
 
 import initStore from './init-store'
 import App from '../shared/app'
-import { APP_CONTAINER_CLASS, STATIC_PATH, WDS_PORT } from '../shared/config'
+import { APP_CONTAINER_CLASS, STATIC_PATH, WDS_PORT, JSS_SSR_CLASS } from '../shared/config'
 import { isProd } from '../shared/util'
 
 const renderApp = (
@@ -16,11 +17,14 @@ const renderApp = (
   routerContext: ?Object = {},
 ) => {
   const store = initStore(plainPartialState)
+  const sheets = new SheetsRegistry()
   // eslint-disable-next-line
   const appHtml = ReactDOMServer.renderToString(
     <Provider store={store}>
       <StaticRouter location={location} context={routerContext}>
-        <App />
+        <JssProvider registry={sheets}>
+          <App />
+        </JssProvider>
       </StaticRouter>
     </Provider>)
   const head = Helmet.rewind()
@@ -31,7 +35,8 @@ const renderApp = (
       <head>
         ${head.title}
         ${head.meta}
-        <link rel="stylesheet" href="${STATIC_PATH}/css/style.css" />
+        <link rel="stylesheet" href="${STATIC_PATH}/css/bootstrap.min.css" />
+        <style class="${JSS_SSR_CLASS}">${sheets.toString()}</style>
       </head>
       <body>
         <div class="${APP_CONTAINER_CLASS}">${appHtml}</div>

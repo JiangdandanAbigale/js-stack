@@ -4,3 +4,4 @@ suppress_comment= \\(.\\|\n\\)*\\flow-disable-next-line
 .*/node_modules/eslint-plugin-jsx-a11/*
 .*/node_modules/immutable/dist/immutable.js.flow
 .*/node_modules/webpack-cli/.nyc_output/*
+.*/node_modules/jss/.*
